@@ -1,0 +1,95 @@
+---
+title: "bae-j-hwk-3-2"
+author: "Jennifer Bae"
+date: "2023-03-15"
+header-includes:
+ \usepackage{booktabs}
+ \usepackage{float}
+ \floatplacement{figure}{H}
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, scales,
+               kableExtra, tinytex, modelsummary, fixest, AER)
+
+tax_data <- readRDS("/Users/jenniferbae/Downloads/ECON 470 R Coding/homework3/data/output/TaxBurden_Data.rds")
+
+```
+
+```{r, include=FALSE}
+load("Hwk3_workspace.Rdata")
+```
+
+
+# Summarize the Data
+
+## 1. Present a bar graph showing the proportion of states with a change in their cigarette tax in each year from 1970 to 1985.
+
+```{r, echo=FALSE, warning=FALSE, fig.width=10, figh.height=4, fig.cap="Proportion of states with a change in their cigarette tax"}
+q1.graph
+```
+
+
+## 2. Plot on a single graph the average tax (in 2012 dollars) on cigarettes and the average price of a pack of cigarettes from 1970 to 2018.
+
+```{r, echo=FALSE, warning=FALSE, fig.width=10, figh.height=4, fig.cap="Average Tax (in 2012 dollars) on Cigarettes and the Average Price of a Pack of Cigarettes from 1970 to 2018"}
+q2.graph
+```
+
+## 3. Identify the 5 states with the highest increases in cigarette prices (in dollars) over the time period. Plot the average number of packs sold per capita for those states from 1970 to 2018.
+
+```{r, echo=FALSE, warning=FALSE, fig.width=10, figh.height=4, fig.cap="The Average Number of Packs sold per Capita for the 5 States with the Highest Increases in Cigarette Prices"}
+q3.graph
+```
+
+## 4. Identify the 5 states with the lowest increases in cigarette prices over the time period. Plot the average number of packs sold per capita for those states from 1970 to 2018.
+
+```{r, echo=FALSE, warning=FALSE, fig.width=10, figh.height=4, fig.cap="The Average Number of Packs sold per Capita for the 5 States with the Lowest Increases in Cigarette Prices"}
+q4.graph
+```
+
+## 5. Compare the trends in sales from the 5 states with the highest price increases to those with the lowest price increases.
+
+```{r, echo=FALSE, warning=FALSE, fig.width=10, figh.height=4, fig.cap="The Average Number of Packs sold per Capita for the 5 States with the Highest and Lowest Increases in Cigarette Prices"}
+q5.graph
+```
+
+# Estimate ATEs
+
+## 6. Focusing only on the time period from 1970 to 1990, regress log sales on log prices to estimate the price elasticity of demand over that period. Interpret your results.
+
+
+```{r, echo=FALSE, warning=FALSE}
+summary(ols1)$coefficients %>%
+  kable(digit =5, format.args = list(big.mark =","),
+        caption = "Log-Log Regression of Sales and Prices (1970-1990)", booktabs = TRUE) %>%
+  kable_styling(latex_options =c("hold_position"), full_width=TRUE, position = "center")
+```
+
+
+```{r, echo=FALSE, warning=FALSE}
+modelsummary(
+  list('Estimate' = ols1),
+  stars = TRUE,
+  coef_map = c("(Intercept)" = "Intercept", "ln_price" = "ln_price", "Num.Obs." = "Observations"),
+  title = "Log-Log Regression of Sales and Prices") %>%
+  kable_styling(latex_options = c("hold_position"), full_width=TRUE, position = "center")
+```
+
+\newpage
+
+## 7. Again limiting to 1970 to 1990, regress log sales on log prices using the total (federal and state) cigarette tax (in dollars) as an instrument for log prices. Interpret your results and compare your estimates to those without an instrument. Are they different? If so, why?
+
+
+```{r, echo=FALSE, fig.pos="H", warning=FALSE}
+modelsummary(
+  list('Estimate' = iv1),
+  stars = TRUE,
+  statistic = "std.error",
+  coef_map = c("(Intercept)" = "Intercept", "fit_ln_price" = "fit_ln_price", "Num.Obs." = "Observations"),
+  title = "Log-Log Regression of Sales and Prices Using Total Cigarette Tax as an Instrument for Log Prices (1970-1990)") %>%
+  kable_styling(latex_options = c("hold_position"), full_width =TRUE, position = "center")
+```
