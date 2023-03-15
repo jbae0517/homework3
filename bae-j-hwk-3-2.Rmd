@@ -93,3 +93,24 @@ modelsummary(
   title = "Log-Log Regression of Sales and Prices Using Total Cigarette Tax as an Instrument for Log Prices (1970-1990)") %>%
   kable_styling(latex_options = c("hold_position"), full_width =TRUE, position = "center")
 ```
+
+## 8. Show the first stage and reduced-form results from the instrument.
+
+still working on it, progress on R code
+
+
+## 9-1. Focusing only on the time period from 1991-2015, regress log sales on log prices to estimate the price elasticity of demand over that period.
+
+still working on it, progress on R code
+
+## 9-2. Limiting to 1991-2015, regress log sales on log prices using the total (federal and state) cigarette tax (in dollars) as an instrument for log prices. 
+
+still working on it, progress on R code
+
+## 9-3 Show the first stage and reduced-form results from the instrument.
+
+still working on it, progress on R code
+
+## 10. Compare your elasticity estimates from 1970-1990 versus those from 1991-2015. Are they different? If so, why?
+
+still working on it, progress on R code
